@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 
-const yargs = require("yargs");
-const { argv } = yargs(process.argv)
-
-console.log(argv.pokemon)
+const inquirer = require("inquirer");
 
 async function printPokeMoves(pokemonMoves) {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonMoves}`);
@@ -13,4 +10,13 @@ async function printPokeMoves(pokemonMoves) {
   console.log(moves.slice(0, 5));
 }
 
-printPokeMoves(argv.pokemon);
+const prompt = inquirer.createPromptModule()
+prompt([{
+    type: "input",
+    name: "pokemon",
+    message: "Enter a pokemon name: ",
+}]).then((answers) => {
+    const pokemon = answers.pokemon
+    printPokeMoves(pokemon);
+})
+
